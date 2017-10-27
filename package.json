@@ -1,6 +1,6 @@
 {
   "name": "roving-tabindex-element-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library that keeps a list of Elements that can be navigated using tab",
   "main": "index.js",
   "scripts": {
@@ -25,12 +25,12 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-register": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-latest": "^6.22.0",
     "browser-env": "^3.2.1"
   },
   "dependencies": {
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-latest": "^6.22.0"
   },
   "ava": {
     "require": [
