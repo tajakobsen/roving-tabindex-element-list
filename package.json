@@ -1,0 +1,42 @@
+{
+  "name": "roving-tabindex-element-list",
+  "version": "1.0.0",
+  "description": "Library that keeps a list of Elements that can be navigated using tab",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tajakobsen/roving-tabindex-element-list.git"
+  },
+  "keywords": [
+    "tabindex",
+    "a11y"
+  ],
+  "author": "Tom Arild Jakobsen <tajakobsen@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tajakobsen/roving-tabindex-element-list/issues"
+  },
+  "homepage": "https://github.com/tajakobsen/roving-tabindex-element-list#readme",
+  "devDependencies": {
+    "ava": "^0.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-latest": "^6.22.0",
+    "browser-env": "^3.2.1"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0"
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "./test/helpers/setup-browser-env.js"
+    ],
+    "babel": "inherit"
+  }
+}
