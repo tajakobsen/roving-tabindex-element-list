@@ -1,4 +1,4 @@
-import { inc, dec, mathMod, useWith, identity} from 'ramda';
+import { inc, dec, mathMod, useWith, identity } from 'ramda';
 
 /**
  * Next index that wraps around
@@ -28,6 +28,7 @@ export const prev = useWith(mathMod, [dec, identity]);
  *
  * @return {number}
  */
+// eslint-disable-next-line no-unused-vars
 export const first = (currentIndex, size) => 0;
 
 

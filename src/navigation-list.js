@@ -1,77 +1,83 @@
-import { equals, without, invoker } from 'ramda';
+import { equals, without } from 'ramda';
 import { first, last, prev, next } from './operations';
+import Eventful from './mixins/eventful';
 import keyCode from './key-code';
+
+/**
+ * @interface NavigationListPlugin
+ * @property {function(NavigationList)} init
+ */
 
 /**
  * Toggles tabindex
  * @param {Element} element
  * @param {boolean} isTabbable
  */
-const toggleTabindex = (element, isTabbable) => element.setAttribute('tabindex', isTabbable ? '0' : '-1');
+const toggleTabIndex = (element, isTabbable) => element.setAttribute('tabindex', isTabbable ? '0' : '-1');
 
-
-/**
- * Calls compareDocumentPosition on two elements
- *
- * @param {Element} a
- * @param {Element} b
- * @return {number}
- */
-const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
-
-/**
- * @const Map of key codes to operations
- */
+/** @const {object<string, function>} Map of key codes to operations */
 const operations = {
   [keyCode.HOME]: first,
   [keyCode.END]: last,
   [keyCode.UP_ARROW]: prev,
   [keyCode.LEFT_ARROW]: prev,
   [keyCode.DOWN_ARROW]: next,
-  [keyCode.RIGHT_ARROW]: next
+  [keyCode.RIGHT_ARROW]: next,
 };
 
 /**
  * @typedef {object} NavigationListState
  * @property {number} currentIndex
+ * @mixes Eventful
  */
-
 export default class NavigationList {
   /**
    * @constructor
-   * @param {boolean} [sortBeforeUpdate]
+   * @mixes Eventful
+   * @param {NavigationListPlugin[]} [plugins]
    */
-  constructor({ sortBeforeUpdate = false } = {}) {
-    this.sortBeforeUpdate = sortBeforeUpdate;
+  constructor({ plugins = [] } = {}) {
+    // add event system
+    Object.assign(this, Eventful());
+
+    // initiates the plugins
+    plugins.forEach(plugin => plugin.init(this));
 
     /**
-     * @type {Element[]}
+     * @type {Array.<Element|EventTarget>}
      */
     this.elements = [];
+
     /**
      * @type {NavigationListState}
      */
     this.state = {
-      currentIndex: 0
+      currentIndex: 0,
     };
 
     /**
      * @type {function}
      */
     this.boundHandleKeydown = this.handleKeyDown.bind(this);
+
     /**
      * @type {function}
      */
     this.boundHandleClick = this.handleClick.bind(this);
   }
 
+  /**
+   * Registers an element with the navigation list
+   *
+   * @param {Element} element
+   */
   registerElement(element) {
     this.elements.push(element);
-    const index =  this.elements.length - 1;
+    const index = this.elements.length - 1;
 
     element.addEventListener('keydown', this.boundHandleKeydown);
     element.addEventListener('click', this.boundHandleClick);
-    toggleTabindex(element, equals(this.state.currentIndex, index));
+    toggleTabIndex(element, equals(this.state.currentIndex, index));
   }
 
   /**
@@ -107,36 +113,29 @@ export default class NavigationList {
   }
 
   /**
-   * Returns the list of elements
-   * @return {Element[]}
-   */
-  getElements() {
-    return this.elements;
-  }
-
-  /**
    * Updates the state
    *
    * @param {function(number, number) : number} operation
    */
   updateState(operation) {
-    if (this.sortBeforeUpdate) {
-      this.sortElementsByDomPosition();
+    if (this.fire('beforeUpdateState', this.createEventPayload()) !== false) {
+      this.state.currentIndex = operation(this.state.currentIndex, this.elements.length);
+      this.applyState(this.state, this.elements);
+      this.getCurrentlySelectedElement().focus();
+      this.fire('stateUpdated', this.createEventPayload());
     }
-
-    this.state.currentIndex = operation(this.state.currentIndex, this.elements.length);
-    this.applyState(this.state, this.elements);
-    this.getCurrentlySelectedElement().focus();
   }
 
   /**
-   * Sorts the elements by position in dom
-   * Note that this function uses the bitwise operator (&) on purpose
+   *
+   * @param {Object} [event]
+   * @returns {Object}
    */
-  sortElementsByDomPosition() {
-    const current = this.getCurrentlySelectedElement();
-    this.elements.sort((a, b) => a.compareDocumentPosition(b) & 2 ? 1 : -1);
-    this.state.currentIndex = this.elements.indexOf(current);
+  createEventPayload(event) {
+    return Object.assign({
+      elements: this.elements,
+      state: this.state,
+    }, event);
   }
 
   /**
@@ -153,10 +152,11 @@ export default class NavigationList {
    * @param {NavigationListState} state
    * @param {Element[]} elements
    */
+  // eslint-disable-next-line class-methods-use-this
   applyState(state, elements) {
     elements.forEach((element, index) => {
       const isCurrent = equals(state.currentIndex, index);
-      toggleTabindex(element, isCurrent);
-    })
+      toggleTabIndex(element, isCurrent);
+    });
   }
 }

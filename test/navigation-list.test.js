@@ -1,7 +1,7 @@
 import test from 'ava';
 import { equals } from 'ramda';
 import NavigationList from '../src/navigation-list';
-import keyCode from '../src/key-code'
+import keyCode from '../src/key-code';
 
 
 let navigationList;
@@ -14,9 +14,8 @@ let element3;
  * @param {keyCode} which
  * @return {KeyboardEvent}
  */
-const createKeyboardEvent = (which) => {
-  return new KeyboardEvent("keydown", { bubbles : false, cancelable : true, which: which });
-};
+// eslint-disable-next-line no-undef
+const createKeyboardEvent = which => new KeyboardEvent('keydown', { bubbles: false, cancelable: true, which });
 
 /**
  * Returns true if the element has tabindex="0"
@@ -30,12 +29,11 @@ const hasTabIndex = element => element.getAttribute('tabindex') === '0';
  * @param {Element} element
  * @return {boolean}
  */
-const isAloneWithTabIndex = (element) => {
-  return equals(hasTabIndex(element1), element1 === element)
+const isAloneWithTabIndex = element => equals(hasTabIndex(element1), element1 === element)
     && equals(hasTabIndex(element2), element2 === element)
     && equals(hasTabIndex(element3), element3 === element);
-};
 
+// reset before each test
 test.beforeEach(() => {
   navigationList = new NavigationList();
 
@@ -54,7 +52,7 @@ test('create navigation list', (t) => {
 });
 
 
-test('press down/right key', t => {
+test('press down/right key', (t) => {
   element1.dispatchEvent(createKeyboardEvent(keyCode.DOWN_ARROW));
   t.true(isAloneWithTabIndex(element2));
 
@@ -62,7 +60,7 @@ test('press down/right key', t => {
   t.true(isAloneWithTabIndex(element3));
 });
 
-test('press up/left key', t => {
+test('press up/left key', (t) => {
   element1.dispatchEvent(createKeyboardEvent(keyCode.UP_ARROW));
   t.true(isAloneWithTabIndex(element3));
 
@@ -70,13 +68,13 @@ test('press up/left key', t => {
   t.true(isAloneWithTabIndex(element2));
 });
 
-test('press home key', t => {
+test('press home key', (t) => {
   element1.dispatchEvent(createKeyboardEvent(keyCode.UP_ARROW));
   element1.dispatchEvent(createKeyboardEvent(keyCode.HOME));
   t.true(isAloneWithTabIndex(element1));
 });
 
-test('press end key', t => {
+test('press end key', (t) => {
   element1.dispatchEvent(createKeyboardEvent(keyCode.DOWN_ARROW));
   element1.dispatchEvent(createKeyboardEvent(keyCode.END));
   t.true(isAloneWithTabIndex(element3));

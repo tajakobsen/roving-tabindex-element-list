@@ -25,7 +25,10 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-register": "^6.26.0",
-    "browser-env": "^3.2.1"
+    "browser-env": "^3.2.2",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
   },
   "dependencies": {
     "ramda": "^0.25.0",
