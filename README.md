@@ -17,3 +17,28 @@ navigationList.registerElement(element2);
 
 // congratulations, you can now use arrow keys + HOME + END to move between the elements in the list 
 ```
+
+## Altering behaviour with Plugins
+
+```javascript
+const plugin = {
+  init: (navigationList) => {
+    navigationList.on('beforeUpdateState', ({ elements }) => {
+      console.log('State is updating for list: ', elements);
+    });
+  }
+}
+  
+const navigationList = new NavigationList({
+  plugins: [plugin]
+});
+```
+
+### List of included plugins
+
+ * [Sort by dom position](./src/plugins/sort-by-dom-position.js) - Plugin that keeps the element list sorted based on 
+ element positions in the dom.
+
+## Licence
+
+This librariy is licenced with the [MIT Licence](LICENCE)
