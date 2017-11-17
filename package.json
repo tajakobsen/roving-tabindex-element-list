@@ -1,6 +1,6 @@
 {
   "name": "roving-tabindex-element-list",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Library that keeps a list of Elements that can be navigated using tab",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,9 @@
   },
   "keywords": [
     "tabindex",
-    "a11y"
+    "keyboard",
+    "a11y",
+    "accessibility"
   ],
   "author": "Tom Arild Jakobsen <tajakobsen@gmail.com>",
   "license": "MIT",
