@@ -6,7 +6,8 @@
 JavaScript library that keeps a list of Elements that can be navigated using tab. This is very useful when working
 with accessibility.
 
-Usage:
+## Usage
+
 ```javascript
 import NavigationList from 'roving-tabindex-element-list';
 
@@ -18,7 +19,7 @@ navigationList.registerElement(element2);
 // congratulations, you can now use arrow keys + HOME + END to move between the elements in the list 
 ```
 
-## Altering behaviour with Plugins
+## Altering behaviour with plugins
 
 ```javascript
 const plugin = {
