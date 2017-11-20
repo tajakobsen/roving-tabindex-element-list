@@ -1,6 +1,6 @@
 {
   "name": "roving-tabindex-element-list",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Library that keeps a list of Elements that can be navigated using tab",
   "main": "index.js",
   "scripts": {

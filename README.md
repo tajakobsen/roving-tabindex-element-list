@@ -39,6 +39,8 @@ const navigationList = new NavigationList({
 
  * [Sort by dom position](./src/plugins/sort-by-dom-position.js) - Plugin that keeps the element list sorted based on 
  element positions in the dom.
+  * [Prevent wrapping](./src/plugins/prevent-wrapping.js) - Plugin that prevents the tabindex from wrapping around to the 
+  last element, when pressing up on the first element, and vise versa. 
 
 ## Licence
 

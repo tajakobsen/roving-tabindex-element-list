@@ -101,34 +101,33 @@ export default class NavigationList {
 
   /**
    * Find the operation to perform to update the state
-   * @param {KeyboardEvent} e
+   * @param {KeyboardEvent} keyboardEvent
    */
-  handleKeyDown(e) {
-    const operation = operations[e.which];
+  handleKeyDown(keyboardEvent) {
+    const operation = operations[keyboardEvent.which];
+    const event = this.createEventPayload({ which: keyboardEvent.which });
 
-    if (operation) {
+    if (operation && this.fire('beforeUpdateState', event) !== false) {
       this.updateState(operation);
-      e.preventDefault();
+      keyboardEvent.preventDefault();
     }
   }
 
   /**
    * Updates the state
-   *
    * @param {function(number, number) : number} operation
    */
   updateState(operation) {
-    if (this.fire('beforeUpdateState', this.createEventPayload()) !== false) {
-      this.state.currentIndex = operation(this.state.currentIndex, this.elements.length);
-      this.applyState(this.state, this.elements);
-      this.getCurrentlySelectedElement().focus();
-      this.fire('stateUpdated', this.createEventPayload());
-    }
+    this.state.currentIndex = operation(this.state.currentIndex, this.elements.length);
+    this.applyState(this.state, this.elements);
+    this.getCurrentlySelectedElement().focus();
+    this.fire('stateUpdated', this.createEventPayload());
   }
 
   /**
-   *
+   * Creates an object to be used as event payload
    * @param {Object} [event]
+   *
    * @returns {Object}
    */
   createEventPayload(event) {
@@ -140,6 +139,7 @@ export default class NavigationList {
 
   /**
    * Returns the currently selected element
+   *
    * @return {Element}
    */
   getCurrentlySelectedElement() {
